@@ -49,25 +49,38 @@ run name scenario queue = do
   putStrLn $ "  var: " ++ show (fromIntegral sumSqrTime / fromIntegral n - avgTime * avgTime)
   --putStrLn $ "  total: " ++ show (doneTime `diffUTCTime` startTime)
 
+run2 :: Queue q => String -> Int -> q Int -> IO ()
+run2 name len q = do
+  putStrLn $ "start test " ++ name
+  timeBefore <- getCPUTime
+  let
+    myQueue = foldr push q [1..len]
+    bads = map (\x -> pop (push x myQueue)) [1..len]
+    !headSum = foldr (\(Just (h, _)) acc -> acc + h) 0 bads
+  timeAfter <- getCPUTime
+  putStrLn $ "done test " ++ name ++ "\n  " ++ show (timeAfter - timeBefore)
+
 main :: IO ()
 main = do
   [sizeStr] <- getArgs
 
   let
     size = read sizeStr :: Int
-    scenario = force $ scHead . scMiddle . scTail $ Done
-
-    scHead = go size where
-      go 0 = id
-      go n = Push n . go (n - 1)
-
-    scTail = go size where
-      go 0 = id
-      go n = Pop . go (n - 1)
-
-    scMiddle = go size where
-      go 0 = id
-      go n = Push n . Pop . go (n - 1)
-
-  run "amortized" scenario (new :: QueueAmortized Int)
-  run "realtime" scenario (new :: QueueRealtime Int)
+--    scenario = force $ scHead . scMiddle . scTail $ Done
+--
+--    scHead = go size where
+--      go 0 = id
+--      go n = Push n . go (n - 1)
+--
+--    scTail = go size where
+--      go 0 = id
+--      go n = Pop . go (n - 1)
+--
+--    scMiddle = go size where
+--      go 0 = id
+--      go n = Push n . Pop . go (n - 1)
+--
+--  run "amortized" scenario (new :: QueueAmortized Int)
+--  run "realtime" scenario (new :: QueueRealtime Int)
+  run2 "amortized" size (new :: QueueAmortized Int)
+  run2 "realtime" size (new :: QueueRealtime Int)
