@@ -409,4 +409,4 @@ instance Queue QueueRealtime where
 
   + [Purely Functional Data Structures](https://www.cs.cmu.edu/~rwh/theses/okasaki.pdf) by Chris Okasaki.
 
-  + [這次的完整範例程式](https://github.com/CindyLinz/Talk-PureFunctionalRealTimeQueue/PureFunctionalRealtimeQueue)
+  + [這次的完整範例程式](https://github.com/CindyLinz/Talk-PureFunctionalRealTimeQueue/tree/master/PureFunctionalRealtimeQueue)
