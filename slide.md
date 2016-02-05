@@ -139,7 +139,7 @@ reverse as = go as [] where
 --
 
 ```haskell
-Moving a = Reversing
+data Moving a = Reversing
   [a] -- 等待翻轉
   [a] -- 已被翻轉
 
